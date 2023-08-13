@@ -1,0 +1,24 @@
+learn_dbt:
+  outputs:
+
+    dev:
+      type: postgres
+      threads: 4
+      host: db
+      port: "{{ env_var('POSTGRES_PORT') }}"
+      user: "{{ env_var('POSTGRES_USER') }}"
+      pass: "{{ env_var('POSTGRES_PASSWORD') }}"
+      dbname: "{{ env_var('POSTGRES_DB') }}"
+      schema: dbt
+
+    prod:
+      type: postgres
+      threads: 4
+      host: db
+      port: "{{ env_var('POSTGRES_PORT') }}"
+      user: "{{ env_var('POSTGRES_USER') }}"
+      pass: "{{ env_var('POSTGRES_PASSWORD') }}"
+      dbname: "{{ env_var('POSTGRES_DB') }}"
+      schema: dbt
+
+  target: dev

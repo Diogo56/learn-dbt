@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: postgres
+
+    image: postgres:15
+
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+
+    env_file:
+      - .env
+
+    volumes:
+      - learn_dbt_data:/var/lib/postgresql/data/
+
+    networks:
+      - learning_dbt
+
+  pgadmin:
+    container_name: pgadmin
+
+    image: dpage/pgadmin4
+
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+    env_file:
+      - .env
+
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+    networks:
+      - learning_dbt
+
+  dbt:
+    build: .
+    container_name: dbt
+
+    volumes:
+      - dbt_project:/usr/src/app
+
+    depends_on:
+      - db
+
+    env_file:
+      - .env
+    
+    ports:
+      - "${DBT_WEB_PAGE_PORT}:${DBT_WEB_PAGE_PORT}"
+    
+    command: >
+      bash -c "dbt run
+      && dbt docs generate
+      && dbt docs serve --port ${DBT_WEB_PAGE_PORT}"
+    
+    networks:
+      - learning_dbt
+
+volumes:
+  learn_dbt_data:
+  pgadmin-data:
+  dbt_project:
+
+networks:
+  learning_dbt:
+    driver: bridge
