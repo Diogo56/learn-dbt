@@ -41,7 +41,7 @@ services:
     build: .
     container_name: dbt
 
-    # The volumes has been removed because dbt not build new documentations if the docs arleady exists in folder
+    # The volumes has been removed because dbt not build new documentations if the documents already exists in
     # Check this issue later
     # volumes:
     #   - dbt_project:/usr/src/app
